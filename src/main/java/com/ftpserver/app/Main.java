@@ -1,16 +1,21 @@
 package com.ftpserver.app;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.util.threads.ClientThread;
 
 /**
  * Hello world!
  *
  */
 public class Main {
+	
+	private static List<ClientThread> openClients = new ArrayList<>();
+	
     public static void main(String[] args) {
     	
     	ServerSocket server = null;
@@ -25,13 +30,16 @@ public class Main {
     		try {
 				Socket socket = server.accept();
 				
-				BufferedWriter os = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-				
-				os.write("Saluz");
-				os.flush();
+				openNewClient(socket);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
     	}
+    }
+    
+    public static void openNewClient(Socket socket) {
+    	ClientThread client = new ClientThread(socket);
+    	openClients.add(client);
+    	client.start();
     }
 }
