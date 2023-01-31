@@ -38,8 +38,8 @@ public class Main {
     }
     
     public static void openNewClient(Socket socket) {
-    	ClientThread client = new ClientThread(socket);
+    	ClientThread client = new ClientThread(socket, openClients);
     	openClients.add(client);
     	client.start();
-    }
+    }   
 }

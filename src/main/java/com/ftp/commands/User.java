@@ -1,5 +1,7 @@
 package com.ftp.commands;
 
+import java.util.List;
+
 import com.ftpserver.exceptions.UserException;
 
 /**
@@ -11,8 +13,8 @@ public class User extends Command {
 	
 	private final String EXPECTED_USER = "anonymous";
 
-	public User(int code, String message) {
-		super(code, message);
+	public User(int code, List<String> params) {
+		super(code, params);
 	}
 
 	/**
@@ -21,7 +23,7 @@ public class User extends Command {
 	 */
 	@Override
 	public boolean handleRequest() throws UserException {
-		if(this.EXPECTED_USER.equals(message))
+		if(this.EXPECTED_USER.equals(this.params.get(0)))
 			return true;
 		return false;
 	}

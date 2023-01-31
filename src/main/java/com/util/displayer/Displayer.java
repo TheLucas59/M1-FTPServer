@@ -21,6 +21,6 @@ public class Displayer {
 	}
 	
 	public String constructResponse(Command c) {
-		return c.getCode() + c.getMessage();
+		return c.getCode() + "";
 	}
 }

@@ -1,5 +1,7 @@
 package com.ftp.commands;
 
+import java.util.List;
+
 import com.ftpserver.exceptions.CommandException;
 
 /**
@@ -10,19 +12,19 @@ import com.ftpserver.exceptions.CommandException;
 public abstract class Command {
 	
 	protected int code;
-	protected String message;
+	protected List<String> params;
 	
-	public Command(int code, String message) {
+	public Command(int code, List<String> params) {
 		this.code = code;
-		this.message = message;
+		this.params = params;
 	}
 	
 	public int getCode() {
 		return code;
 	}
 	
-	public String getMessage() {
-		return message;
+	public List<String> getMessage() {
+		return params;
 	}
 	
 	/**
@@ -41,7 +43,8 @@ public abstract class Command {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.code);
 		sb.append(" ");
-		sb.append(this.message);
 		return sb.toString();
 	}
+	
+	
 }
