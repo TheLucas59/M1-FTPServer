@@ -19,8 +19,4 @@ public class Displayer {
 		}
 		return displayer;
 	}
-	
-	public String constructResponse(Command c) {
-		return c.getCode() + "";
-	}
 }

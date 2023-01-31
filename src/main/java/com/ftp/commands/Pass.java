@@ -1,28 +1,29 @@
 package com.ftp.commands;
 
-import java.util.List;
+import java.io.PrintWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.ftpserver.exceptions.CommandException;
+import com.ftpserver.exceptions.PassException;
 
 /**
  * Pass is used to send and check the password of the user
- * @author Aurélien Plancke
+ * @author Aurélien Plancke, Lucas Plé
  *
  */
-public class Pass extends Command{
-
-	private final String EXPECTED_PASSWORD = "anonymous";
-	private static final Log LOGGER = LogFactory.getLog(Pass.class);
+public class Pass extends Command {
 	
-	public Pass(int code, List<String> params) {
-		super(code, params);
-		if(this.params.size() != 1) {
-			LOGGER.fatal("Number of args not correct");
-		}
-		
+	private static final Log LOGGER = LogFactory.getLog(Pass.class);
+
+	private String password;
+	
+	public Pass(PrintWriter writer, String password) {
+		super(writer);
+		this.password = password;
+		this.successCode = 230;
+		this.successPhrase = "Login successful.";
 	}
 
 	/**
@@ -31,9 +32,11 @@ public class Pass extends Command{
 	 */
 	@Override
 	public boolean handleRequest() throws CommandException {
-		if(this.EXPECTED_PASSWORD.equals(this.params.get(0)))
+		if(!this.password.isEmpty()) {
+			writeSuccess();
 			return true;
-		return false;
+		}
+		throw new PassException();
 	}
 
 }

@@ -1,8 +1,9 @@
 package com.ftp.commands;
 
-import java.util.List;
+import java.io.PrintWriter;
 
 import com.ftpserver.exceptions.CommandException;
+import com.util.SocketUtils;
 
 /**
  * Abstract class that defines the common behavior of FTP server side commands
@@ -11,20 +12,13 @@ import com.ftpserver.exceptions.CommandException;
  */
 public abstract class Command {
 	
-	protected int code;
-	protected List<String> params;
+	protected int successCode;
+	protected String successPhrase;
+
+	protected PrintWriter writer;
 	
-	public Command(int code, List<String> params) {
-		this.code = code;
-		this.params = params;
-	}
-	
-	public int getCode() {
-		return code;
-	}
-	
-	public List<String> getMessage() {
-		return params;
+	protected Command(PrintWriter writer) {
+		this.writer = writer;
 	}
 	
 	/**
@@ -34,16 +28,12 @@ public abstract class Command {
 	 */
 	public abstract boolean handleRequest() throws CommandException;
 	
-	
-	/**
-	 * 
-	 * @return The response that will be send to the client
-	 */
-	public String constructResponse() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.code);
-		sb.append(" ");
-		return sb.toString();
+	public void writeSuccess() {
+		StringBuilder response = new StringBuilder();
+		response.append(this.successCode);
+		response.append(" ");
+		response.append(this.successPhrase);
+		SocketUtils.sendMessageWithFlush(this.writer, response.toString());
 	}
 	
 	

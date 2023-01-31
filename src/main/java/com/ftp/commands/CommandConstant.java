@@ -1,6 +1,6 @@
 package com.ftp.commands;
 
 public class CommandConstant {
-	final static String USER = "USER";
-	final static String PASS = "PASS";
+	public static final String USER = "USER";
+	public static final String PASS = "PASS";
 }

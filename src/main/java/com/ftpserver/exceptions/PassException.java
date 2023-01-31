@@ -9,8 +9,8 @@ public class PassException extends CommandException {
 
 	private static final long serialVersionUID = -1215072961793188046L;
 
-	public PassException(int errorCode, String errorMessage) {
-		super(errorCode, errorMessage);
+	public PassException() {
+		super(503, "Login with USER first.");
 	}
 
 }

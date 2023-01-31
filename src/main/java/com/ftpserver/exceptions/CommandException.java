@@ -15,4 +15,8 @@ public abstract class CommandException extends Exception{
 		this.errorCode = errorCode;
 		this.errorMessage = errorMessage;
 	}
+	
+	public String toString() {
+		return this.errorCode + " " + this.errorMessage;
+	}
 }
