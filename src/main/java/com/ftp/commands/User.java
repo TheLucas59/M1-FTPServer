@@ -18,7 +18,7 @@ public class User extends Command {
 	public User(PrintWriter writer, String user) {
 		super(writer);
 		this.user = user;
-		this.successCode = 330;
+		this.successCode = 331;
 		this.successPhrase = "Please specify the password.";
 	}
 

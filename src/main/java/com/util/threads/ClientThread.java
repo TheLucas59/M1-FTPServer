@@ -50,8 +50,14 @@ public class ClientThread extends Thread {
 				String command = input[0];
 				String param = input[1];
 				
-				if(CommandConstant.USER.equals(command)) {
+				if(CommandConstant.USER.equalsIgnoreCase(command)) {
 					authenticate(reader, writer, param);
+				}
+				else if(CommandConstant.PASS.equalsIgnoreCase(command)) {
+					throwUserFirst(writer);
+				}
+				else {
+					throwAuthenticateFirst(writer);
 				}
 			}
 			
@@ -77,7 +83,25 @@ public class ClientThread extends Thread {
 
 	private void authenticate(BufferedReader reader, PrintWriter writer, String param) throws IOException {
 		try {
-			connected = AuthenticationHandler.connect(param, writer, reader);
+			this.connected = AuthenticationHandler.connect(param, writer, reader);
+		}
+		catch(CommandException e) {
+			SocketUtils.sendMessageWithFlush(writer, e.toString());
+		}
+	}
+	
+	private void throwUserFirst(PrintWriter writer) {
+		try {
+			AuthenticationHandler.throwLoginWithUserFirst();
+		}
+		catch(CommandException e) {
+			SocketUtils.sendMessageWithFlush(writer, e.toString());
+		}
+	}
+	
+	private void throwAuthenticateFirst(PrintWriter writer) {
+		try {
+			AuthenticationHandler.throwAuthenticateFirst();
 		}
 		catch(CommandException e) {
 			SocketUtils.sendMessageWithFlush(writer, e.toString());

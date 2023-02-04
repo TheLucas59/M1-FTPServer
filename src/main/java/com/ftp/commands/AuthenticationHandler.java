@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.ftpserver.exceptions.AuthenticateFirstException;
 import com.ftpserver.exceptions.CommandException;
+import com.ftpserver.exceptions.LoginWithUserFirstException;
 import com.ftpserver.exceptions.PassException;
-import com.util.SocketUtils;
 
 /**
- * 
- * @author lucas
+ * Utility class used to handle the different connection events.
+ * @author Lucas Plé
  *
  */
 public class AuthenticationHandler {
@@ -34,5 +35,13 @@ public class AuthenticationHandler {
 		}
 		
 		return false;
+	}
+	
+	public static void throwLoginWithUserFirst() throws CommandException {
+		throw new LoginWithUserFirstException();
+	}
+
+	public static void throwAuthenticateFirst() throws CommandException {
+		throw new AuthenticateFirstException();
 	}
 }
