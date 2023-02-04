@@ -1,9 +1,13 @@
-package com.ftp.commands;
+package com.ftp.commands.handlers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.ftp.commands.Command;
+import com.ftp.commands.CommandConstant;
+import com.ftp.commands.Pass;
+import com.ftp.commands.User;
 import com.ftpserver.exceptions.AuthenticateFirstException;
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.LoginWithUserFirstException;

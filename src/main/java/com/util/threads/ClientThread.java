@@ -4,14 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.ftp.commands.AuthenticationHandler;
 import com.ftp.commands.CommandConstant;
-import com.ftp.commands.CommandHandler;
+import com.ftp.commands.handlers.AuthenticationHandler;
+import com.ftp.commands.handlers.CommandHandler;
 import com.ftpserver.exceptions.CommandException;
 import com.util.SocketUtils;
 
@@ -28,10 +29,14 @@ public class ClientThread extends Thread {
 	private Socket client;
 	private List<ClientThread> allClients;
 	private boolean connected = false;
+	private Path rootPath;
+	private Path currentPath;
 	
-	public ClientThread(Socket client, List<ClientThread> allClients) {
+	public ClientThread(Socket client, List<ClientThread> allClients, Path rootPath) {
 		this.client = client;
 		this.allClients = allClients;
+		this.currentPath = rootPath;
+		this.rootPath = rootPath;
 	}
 	
 	@Override
@@ -64,7 +69,7 @@ public class ClientThread extends Thread {
 			while((request = reader.readLine()) != null) {
 				try {
 					if(!request.isBlank() && !request.isEmpty()) {
-						CommandHandler.handleCommand(request);
+						CommandHandler.handleCommand(request, writer, this.currentPath, this.rootPath);
 						LOGGER.info(request);
 					}
 				} catch (CommandException e) {
