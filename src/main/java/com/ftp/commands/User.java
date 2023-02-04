@@ -27,9 +27,8 @@ public class User extends Command {
 	 * @return True if the username send by the user is equals to the one in server
 	 */
 	@Override
-	public boolean handleRequest() throws UserException {
+	protected boolean handleRequest() throws UserException {
 		if(this.EXPECTED_USER.equals(this.user)) {
-			this.writeSuccess();
 			return true;
 		}
 		throw new UserException();

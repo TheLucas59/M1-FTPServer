@@ -69,7 +69,7 @@ public class ClientThread extends Thread {
 			while((request = reader.readLine()) != null) {
 				try {
 					if(!request.isBlank() && !request.isEmpty()) {
-						CommandHandler.handleCommand(request, writer, this.currentPath, this.rootPath);
+						CommandHandler.handleCommand(request, writer, this);
 						LOGGER.info(request);
 					}
 				} catch (CommandException e) {
@@ -111,5 +111,17 @@ public class ClientThread extends Thread {
 		catch(CommandException e) {
 			SocketUtils.sendMessageWithFlush(writer, e.toString());
 		}
+	}
+
+	public Path getRootPath() {
+		return rootPath;
+	}
+
+	public Path getCurrentPath() {
+		return currentPath;
+	}
+
+	public void setCurrentPath(Path currentPath) {
+		this.currentPath = currentPath;
 	}
 }

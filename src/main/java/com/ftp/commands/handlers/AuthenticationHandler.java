@@ -22,7 +22,7 @@ public class AuthenticationHandler {
 	
 	public static boolean connect(String login, PrintWriter writer, BufferedReader reader) throws IOException, CommandException {
 		Command user = new User(writer, login);
-		if(user.handleRequest()) {
+		if(user.run()) {
 			String passLine = reader.readLine();
 			String[] commandAndParam = passLine.split(" ");
 			String command = commandAndParam[0];
@@ -33,7 +33,7 @@ public class AuthenticationHandler {
 				}
 				
 				Command pass = new Pass(writer, password);
-				return pass.handleRequest();
+				return pass.run();
 			}
 			throw new PassException();
 		}

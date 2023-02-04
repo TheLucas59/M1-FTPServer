@@ -11,11 +11,12 @@ public abstract class CommandException extends Exception{
 	public int errorCode;
 	public String errorMessage;
 	
-	public CommandException(int errorCode, String errorMessage) {
+	protected CommandException(int errorCode, String errorMessage) {
 		this.errorCode = errorCode;
 		this.errorMessage = errorMessage;
 	}
 	
+	@Override
 	public String toString() {
 		return this.errorCode + " " + this.errorMessage;
 	}

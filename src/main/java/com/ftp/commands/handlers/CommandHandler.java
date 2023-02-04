@@ -1,15 +1,16 @@
 package com.ftp.commands.handlers;
 
 import java.io.PrintWriter;
-import java.nio.file.Path;
 
 import com.ftp.commands.Command;
 import com.ftp.commands.CommandConstant;
+import com.ftp.commands.Cwd;
 import com.ftp.commands.Pwd;
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.CommandNotFoundException;
 import com.ftpserver.exceptions.NoChangeFromGuestUserException;
 import com.ftpserver.exceptions.UserAlreadyLoggedInException;
+import com.util.threads.ClientThread;
 
 /**
  * Utility class used to parse user input and execute the adequate command.
@@ -18,7 +19,7 @@ import com.ftpserver.exceptions.UserAlreadyLoggedInException;
  */
 public class CommandHandler {
 
-	public static void handleCommand(String request, PrintWriter writer, Path currentPath, Path rootPath) throws CommandException {
+	public static void handleCommand(String request, PrintWriter writer, ClientThread client) throws CommandException {
 		String[] input = new String[2];
 		parseInput(request, input);
 		String command = input[0].toUpperCase();
@@ -31,12 +32,15 @@ public class CommandHandler {
 			case CommandConstant.PASS :
 				throw new UserAlreadyLoggedInException();
 			case CommandConstant.PWD :
-				commandExecutable = new Pwd(writer, currentPath, rootPath);
+				commandExecutable = new Pwd(writer, client);
+				break;
+			case CommandConstant.CWD :
+				commandExecutable = new Cwd(writer, client, param);
 				break;
 		default:
 			throw new CommandNotFoundException();
 		}
-		commandExecutable.handleRequest();
+		commandExecutable.run();
 	}
 	
 	public static void parseInput(String request, String[] input) {

@@ -1,29 +1,30 @@
 package com.ftp.commands;
 
 import java.io.PrintWriter;
-import java.nio.file.Path;
 
 import com.ftpserver.exceptions.CommandException;
+import com.util.threads.ClientThread;
 
 public class Pwd extends Command {
 	
-	private Path currentPath;
-	private Path rootPath;
+	private ClientThread client;
 	
-	public Pwd(PrintWriter writer, Path currentPath, Path rootPath) {
+	public Pwd(PrintWriter writer, ClientThread client) {
 		super(writer);
 		this.successCode = 257;
-		this.currentPath = currentPath;
-		this.rootPath = rootPath;
+		this.client = client;
 	}
 
 	@Override
-	public boolean handleRequest() throws CommandException {
-		String pathString = this.currentPath.toString();
-		String rootString = this.rootPath.toString();
-		pathString = pathString.replace(rootString, "/");
+	protected boolean handleRequest() throws CommandException {
+		String pathString = this.client.getCurrentPath().toString();
+		String rootString = this.client.getRootPath().toString();
+		String replacement = "";
+		if(pathString.equals(rootString)) {
+			replacement = "/";
+		}
+		pathString = pathString.replace(rootString, replacement);
 		this.successPhrase = "\"" + pathString + "\" is the current directory";
-		writeSuccess();
 		return true;
 	}
 

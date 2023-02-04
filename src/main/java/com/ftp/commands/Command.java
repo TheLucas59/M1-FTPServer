@@ -7,7 +7,7 @@ import com.util.SocketUtils;
 
 /**
  * Abstract class that defines the common behavior of FTP server side commands
- * @author Aurélien
+ * @author Aurélien Plancke, Lucas Plé
  *
  */
 public abstract class Command {
@@ -21,14 +21,21 @@ public abstract class Command {
 		this.writer = writer;
 	}
 	
+	public boolean run() throws CommandException {
+		if(this.handleRequest()) {
+			this.writeSuccess();
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * 
 	 * @return True if the command returned successfully
 	 * @throws CommandException on error, see specific command for error cases
 	 */
-	public abstract boolean handleRequest() throws CommandException;
+	protected abstract boolean handleRequest() throws CommandException;
 	
-	public void writeSuccess() {
+	private void writeSuccess() {
 		StringBuilder response = new StringBuilder();
 		response.append(this.successCode);
 		response.append(" ");

@@ -2,9 +2,6 @@ package com.ftp.commands;
 
 import java.io.PrintWriter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.PassException;
 
@@ -15,8 +12,6 @@ import com.ftpserver.exceptions.PassException;
  */
 public class Pass extends Command {
 	
-	private static final Log LOGGER = LogFactory.getLog(Pass.class);
-
 	private String password;
 	
 	public Pass(PrintWriter writer, String password) {
@@ -31,9 +26,8 @@ public class Pass extends Command {
 	 * @return True if the password send by the user is equals to the one in server
 	 */
 	@Override
-	public boolean handleRequest() throws CommandException {
+	protected boolean handleRequest() throws CommandException {
 		if(!this.password.isEmpty()) {
-			writeSuccess();
 			return true;
 		}
 		throw new PassException();
