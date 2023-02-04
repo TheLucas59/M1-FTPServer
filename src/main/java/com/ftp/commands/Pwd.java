@@ -20,10 +20,8 @@ public class Pwd extends Command {
 	@Override
 	public boolean handleRequest() throws CommandException {
 		String pathString = this.currentPath.toString();
-		System.out.println(pathString);
 		String rootString = this.rootPath.toString();
 		pathString = pathString.replace(rootString, "/");
-		System.out.println(pathString);
 		this.successPhrase = "\"" + pathString + "\" is the current directory";
 		writeSuccess();
 		return true;
