@@ -6,8 +6,10 @@ import com.ftp.commands.Command;
 import com.ftp.commands.CommandConstant;
 import com.ftp.commands.Cwd;
 import com.ftp.commands.Dele;
+import com.ftp.commands.Mkd;
 import com.ftp.commands.Pasv;
 import com.ftp.commands.Pwd;
+import com.ftp.commands.Rmd;
 import com.ftp.commands.Stor;
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.CommandNotFoundException;
@@ -50,6 +52,12 @@ public class CommandHandler {
 				break;
 			case CommandConstant.DELE :
 				commandExecutable = new Dele(writer, client, param);
+				break;
+			case CommandConstant.MKD :
+				commandExecutable = new Mkd(writer, client, param);
+				break;
+			case CommandConstant.RMD :
+				commandExecutable = new Rmd(writer, client, param);
 				break;
 		default:
 			throw new CommandNotFoundException();

@@ -10,6 +10,7 @@ public class CommandConstant {
 	public static final String DELE = "DELE";
 	public static final String STOR = "STOR";
 	public static final String MKD = "MKD";
+	public static final String RMD = "RMD";
 	
 	private CommandConstant() {}
 }
