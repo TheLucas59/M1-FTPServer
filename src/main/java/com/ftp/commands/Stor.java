@@ -26,7 +26,7 @@ public class Stor extends Command {
 		this.successPhrase = "Transfer complete.";
 		this.client = client;
 		this.fileName = fileName;
-		}
+	}
 
 	@Override
 	protected boolean handleRequest() throws CommandException {

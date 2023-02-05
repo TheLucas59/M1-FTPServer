@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import com.ftp.commands.Command;
 import com.ftp.commands.CommandConstant;
 import com.ftp.commands.Cwd;
+import com.ftp.commands.Dele;
 import com.ftp.commands.Pasv;
 import com.ftp.commands.Pwd;
 import com.ftp.commands.Stor;
@@ -46,6 +47,9 @@ public class CommandHandler {
 				break;
 			case CommandConstant.STOR :
 				commandExecutable = new Stor(writer, client, param);
+				break;
+			case CommandConstant.DELE :
+				commandExecutable = new Dele(writer, client, param);
 				break;
 		default:
 			throw new CommandNotFoundException();
