@@ -6,7 +6,6 @@ public class CommandNotFoundException extends CommandException{
 
 	public CommandNotFoundException() {
 		super(502, "Not implemented");
-		
 	}
 
 }

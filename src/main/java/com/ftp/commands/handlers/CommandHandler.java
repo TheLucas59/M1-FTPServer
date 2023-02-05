@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import com.ftp.commands.Command;
 import com.ftp.commands.CommandConstant;
 import com.ftp.commands.Cwd;
+import com.ftp.commands.Pasv;
 import com.ftp.commands.Pwd;
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.CommandNotFoundException;
@@ -18,6 +19,8 @@ import com.util.threads.ClientThread;
  *
  */
 public class CommandHandler {
+	
+	private CommandHandler() {}
 
 	public static void handleCommand(String request, PrintWriter writer, ClientThread client) throws CommandException {
 		String[] input = new String[2];
@@ -36,6 +39,9 @@ public class CommandHandler {
 				break;
 			case CommandConstant.CWD :
 				commandExecutable = new Cwd(writer, client, param);
+				break;
+			case CommandConstant.PASV :
+				commandExecutable = new Pasv(writer, client);
 				break;
 		default:
 			throw new CommandNotFoundException();

@@ -3,6 +3,7 @@ package com.util.threads;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.util.List;
@@ -31,6 +32,7 @@ public class ClientThread extends Thread {
 	private boolean connected = false;
 	private Path rootPath;
 	private Path currentPath;
+	private ServerSocket dataCanal;
 	
 	public ClientThread(Socket client, List<ClientThread> allClients, Path rootPath) {
 		this.client = client;
@@ -123,5 +125,13 @@ public class ClientThread extends Thread {
 
 	public void setCurrentPath(Path currentPath) {
 		this.currentPath = currentPath;
+	}
+	
+	public ServerSocket getDataCanal() {
+		return dataCanal;
+	}
+
+	public void setDataCanal(ServerSocket dataCanal) {
+		this.dataCanal = dataCanal;
 	}
 }

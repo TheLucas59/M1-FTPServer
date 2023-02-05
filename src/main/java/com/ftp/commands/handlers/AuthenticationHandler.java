@@ -20,6 +20,8 @@ import com.ftpserver.exceptions.PassException;
  */
 public class AuthenticationHandler {
 	
+	private AuthenticationHandler() {}
+	
 	public static boolean connect(String login, PrintWriter writer, BufferedReader reader) throws IOException, CommandException {
 		Command user = new User(writer, login);
 		if(user.run()) {
