@@ -43,5 +43,4 @@ public abstract class Command {
 		SocketUtils.sendMessageWithFlush(this.writer, response.toString());
 	}
 	
-	
 }

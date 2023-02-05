@@ -7,6 +7,7 @@ import com.ftp.commands.CommandConstant;
 import com.ftp.commands.Cwd;
 import com.ftp.commands.Pasv;
 import com.ftp.commands.Pwd;
+import com.ftp.commands.Stor;
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.CommandNotFoundException;
 import com.ftpserver.exceptions.NoChangeFromGuestUserException;
@@ -42,6 +43,9 @@ public class CommandHandler {
 				break;
 			case CommandConstant.PASV :
 				commandExecutable = new Pasv(writer, client);
+				break;
+			case CommandConstant.STOR :
+				commandExecutable = new Stor(writer, client, param);
 				break;
 		default:
 			throw new CommandNotFoundException();

@@ -9,6 +9,8 @@ import java.net.ServerSocket;
  *
  */
 public class PassiveModeHandler {
+	
+	private PassiveModeHandler() {}
 
 	/**
 	 * Provide a server socket to give the client a port. This port will be used to transfer data.
@@ -18,4 +20,5 @@ public class PassiveModeHandler {
 	public static ServerSocket enterPassiveMode() throws IOException {
 		return new ServerSocket(0);
 	}
+	
 }
