@@ -6,4 +6,10 @@ public class CommandConstant {
 	public static final String PWD = "PWD";
 	public static final String CWD = "CWD";
 	public static final String PASV = "PASV";
+	public static final String LIST = "LIST";
+	public static final String DELE = "DELE";
+	public static final String STOR = "STOR";
+	public static final String MKD = "MKD";
+	
+	private CommandConstant() {}
 }
