@@ -9,9 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermissions;
 
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.ListException;
+import com.ftpserver.exceptions.PasvNeededException;
 import com.util.SocketUtils;
 import com.util.threads.ClientThread;
 
@@ -26,11 +28,11 @@ public class List extends Command{
 	private String readyPhrase = "Here comes the directory listing";
 	private ClientThread client;
 
-	protected List(PrintWriter writer, ClientThread client) {
+	public List(PrintWriter writer, ClientThread client) {
 		super(writer);
 		this.client = client;
-		this.successCode = 150;
-		this.successPhrase = "Here comes the directory listing";
+		this.successCode = 226;
+		this.successPhrase = "Directory send OK.";
 	}
 
 	@Override
@@ -40,11 +42,13 @@ public class List extends Command{
 		String response = executeList();
 		try {
 			PrintWriter dataWriter = SocketUtils.getWritableOutputStream(dataSocket);
-			dataWriter.write(response);
+			SocketUtils.sendMessageWithFlush(dataWriter,response);
+			dataSocket.close();
+			this.client.setDataCanal(null);
 		} catch (IOException e) {
 			throw new ListException();
 		}
-		return false;
+		return true;
 	}
 
 	/**
@@ -56,7 +60,7 @@ public class List extends Command{
 	private String constructFileString(Path path) throws IOException {
 		StringBuilder strb = new StringBuilder();
 		
-		strb.append(Files.getPosixFilePermissions(path));
+		strb.append(PosixFilePermissions.toString(Files.getPosixFilePermissions(path)));
 		strb.append(" ");
 		
 		strb.append(Files.getAttribute(path, "unix:nlink"));
@@ -94,10 +98,13 @@ public class List extends Command{
 	/**
 	 * Get the data socket needed for this command to write on
 	 * @return The data Socket
-	 * @throws ListException
+	 * @throws CommandException If PASV was not used first or if an IO Exception is raised.
 	 */
-	private Socket getDataSocket() throws ListException {
+	private Socket getDataSocket() throws CommandException {
 		ServerSocket clientDataCanal = this.client.getDataCanal();
+		if(clientDataCanal == null) {
+			throw new PasvNeededException();
+		}
 		Socket dataSocket;
 		try {
 			dataSocket = clientDataCanal.accept();

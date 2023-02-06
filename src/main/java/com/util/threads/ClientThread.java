@@ -26,7 +26,7 @@ public class ClientThread extends Thread {
 	
 	private static final Log LOGGER = LogFactory.getLog(ClientThread.class);
 	
-	private static final String CONNECTION_SUCCESSFULL = "220";
+	private static final String CONNECTION_SUCCESSFULL = "220 FTP server (vsftpd)";
 	private Socket client;
 	private List<ClientThread> allClients;
 	private boolean connected = false;
