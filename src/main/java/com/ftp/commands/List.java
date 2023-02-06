@@ -10,6 +10,12 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalField;
+import java.util.Locale;
 
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.ListException;
@@ -42,7 +48,7 @@ public class List extends Command{
 		String response = executeList();
 		try {
 			PrintWriter dataWriter = SocketUtils.getWritableOutputStream(dataSocket);
-			SocketUtils.sendMessageWithFlush(dataWriter,response);
+			SocketUtils.sendMessageWithFlush(dataWriter, response);
 			dataSocket.close();
 			this.client.setDataCanal(null);
 		} catch (IOException e) {
@@ -60,6 +66,7 @@ public class List extends Command{
 	private String constructFileString(Path path) throws IOException {
 		StringBuilder strb = new StringBuilder();
 		
+		strb.append(Files.isDirectory(path)?"d":"-");
 		strb.append(PosixFilePermissions.toString(Files.getPosixFilePermissions(path)));
 		strb.append(" ");
 		
@@ -75,8 +82,15 @@ public class List extends Command{
 		strb.append(Files.size(path));
 		strb.append(" ");
 		
-		strb.append(Files.getLastModifiedTime(path).toString());
-		strb.append(" ");
+		LocalDateTime modifiedTime = LocalDateTime.ofInstant(Files.getLastModifiedTime(path).toInstant(), ZoneId.systemDefault());
+		DateTimeFormatter dtf; 
+		if(modifiedTime.getYear() == LocalDateTime.now().getYear()) {
+			dtf = DateTimeFormatter.ofPattern("MMM dd HH:mm", Locale.ENGLISH);
+		}else {
+			dtf = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
+		}
+		strb.append(modifiedTime.format(dtf));
+		strb.append("\t");
 		
 		strb.append(path.getFileName());
 		strb.append("\n");

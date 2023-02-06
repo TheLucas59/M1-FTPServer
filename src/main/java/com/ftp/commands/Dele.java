@@ -25,10 +25,12 @@ public class Dele extends Command {
 
 	@Override
 	protected boolean handleRequest() throws CommandException {
+		String pathFileDelimiter = "";
 		if(!this.client.getCurrentPath().toString().endsWith("/")) {
-			this.client.setCurrentPath(Paths.get(this.client.getCurrentPath().toString() + "/"));
+			pathFileDelimiter = "/";
 		}
-		Path delete = Paths.get(this.client.getCurrentPath().toString() + this.fileToDelete);
+		
+		Path delete = Paths.get(this.client.getCurrentPath().toString() + pathFileDelimiter + this.fileToDelete);
 		try {
 			Files.deleteIfExists(delete);
 		} catch (IOException e) {

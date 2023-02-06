@@ -25,10 +25,16 @@ public class Cwd extends Command {
 	@Override
 	protected boolean handleRequest() throws CommandException {
 		String currentPathString = this.client.getCurrentPath().toString();
+		if("/".equals(this.pathToMove)) {
+			this.client.setCurrentPath(this.client.getRootPath());
+			return true;
+		}
 		if(!this.pathToMove.startsWith("/")) {
 			currentPathString = currentPathString + "/";
+			currentPathString = currentPathString + this.pathToMove;
+		}else {
+			currentPathString = this.client.getRootPath().toString().concat(this.pathToMove);
 		}
-		currentPathString = currentPathString + this.pathToMove;
 		Path newPath = Paths.get(currentPathString);
 		if(Files.exists(newPath) && Files.isDirectory(newPath)) {
 			this.client.setCurrentPath(newPath);

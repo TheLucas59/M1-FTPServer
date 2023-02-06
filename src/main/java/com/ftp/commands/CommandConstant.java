@@ -11,6 +11,9 @@ public class CommandConstant {
 	public static final String STOR = "STOR";
 	public static final String MKD = "MKD";
 	public static final String RMD = "RMD";
+	public static final String TYPE = "TYPE";
+	public static final String CDUP = "CDUP";
+	
 	
 	private CommandConstant() {}
 }

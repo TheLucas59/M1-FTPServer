@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.StorFailedException;
@@ -51,16 +52,17 @@ public class Stor extends Command {
 		Socket dataSocket = this.client.getDataCanal().accept();
 		InputStream stream = dataSocket.getInputStream();
 		byte[] fileRead = stream.readAllBytes();
+		String pathFileDelimiter = "";
 		if(!this.client.getCurrentPath().toString().endsWith("/")) {
-			this.client.setCurrentPath(Paths.get(this.client.getCurrentPath().toString() + "/"));
+			pathFileDelimiter = "/";
 		}
 		
-		Path newFilePath = Paths.get(this.client.getCurrentPath() + this.fileName);
+		Path newFilePath = Paths.get(this.client.getCurrentPath().toString() + pathFileDelimiter + this.fileName);
 		if(Files.notExists(newFilePath)) {
 			Files.createFile(newFilePath);
 		}
 		Files.write(newFilePath, fileRead);
-		
+
 		dataSocket.close();
 		this.client.getDataCanal().close();
 		this.client.setDataCanal(null);

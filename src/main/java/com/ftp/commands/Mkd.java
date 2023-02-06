@@ -19,14 +19,17 @@ public class Mkd extends Command {
 		super(writer);
 		this.client = client;
 		this.directory = directory;
+		this.successCode = 257;
 	}
 
 	@Override
 	protected boolean handleRequest() throws CommandException {
-		if(!this.client.getCurrentPath().toString().endsWith("/")) {
-			this.client.setCurrentPath(Paths.get(this.client.getCurrentPath().toString() + "/"));
+		String pathFileDelimiter = "";
+		String pathString = this.client.getCurrentPath().toString();
+		if(!pathString.endsWith("/")) {
+			pathFileDelimiter = "/";
 		}
-		Path newDirectory = Paths.get(this.client.getCurrentPath().toString() + this.directory);
+		Path newDirectory = Paths.get(pathString + pathFileDelimiter + this.directory);
 		if(Files.notExists(newDirectory)) {
 			try {
 				Files.createDirectory(newDirectory);
@@ -37,6 +40,15 @@ public class Mkd extends Command {
 		else {
 			throw new CreateDirectoryFailedException();
 		}
+		String replacement = "";
+		String endWith = "";
+		if(this.client.getCurrentPath().equals(this.client.getRootPath())) {
+			replacement = "/";
+		}else if(!this.client.getCurrentPath().endsWith("/")) {
+			endWith = "/";
+		}
+		pathString = pathString.replace(this.client.getRootPath().toString(), replacement) + endWith +this.directory;
+		this.successPhrase = "\"" + pathString + "\" created";
 		return true;
 	}
 

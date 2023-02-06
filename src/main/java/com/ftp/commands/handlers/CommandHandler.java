@@ -2,6 +2,7 @@ package com.ftp.commands.handlers;
 
 import java.io.PrintWriter;
 
+import com.ftp.commands.Cdup;
 import com.ftp.commands.Command;
 import com.ftp.commands.CommandConstant;
 import com.ftp.commands.Cwd;
@@ -12,6 +13,7 @@ import com.ftp.commands.Pasv;
 import com.ftp.commands.Pwd;
 import com.ftp.commands.Rmd;
 import com.ftp.commands.Stor;
+import com.ftp.commands.Type;
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.CommandNotFoundException;
 import com.ftpserver.exceptions.NoChangeFromGuestUserException;
@@ -62,6 +64,12 @@ public class CommandHandler {
 				break;
 			case CommandConstant.LIST:
 				commandExecutable = new List(writer, client);
+				break;
+			case CommandConstant.TYPE:
+				commandExecutable = new Type(writer);
+				break;
+			case CommandConstant.CDUP:
+				commandExecutable = new Cdup(writer, client);
 				break;
 		default:
 			throw new CommandNotFoundException();

@@ -19,14 +19,18 @@ public class Rmd extends Command {
 		super(writer);
 		this.client = client;
 		this.directory = directory;
+		this.successCode = 250;
+		this.successPhrase = "Remove directory operation successful.";
 	}
 
 	@Override
 	protected boolean handleRequest() throws CommandException {
+		String pathFileDelimiter = "";
 		if(!this.client.getCurrentPath().toString().endsWith("/")) {
-			this.client.setCurrentPath(Paths.get(this.client.getCurrentPath().toString() + "/"));
+			pathFileDelimiter = "/";
 		}
-		Path newDirectory = Paths.get(this.client.getCurrentPath().toString() + this.directory);
+		
+		Path newDirectory = Paths.get(this.client.getCurrentPath().toString() + pathFileDelimiter + this.directory);
 		if(Files.exists(newDirectory)) {
 			try {
 				Files.delete(newDirectory);
