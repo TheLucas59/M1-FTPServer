@@ -11,6 +11,7 @@ import com.ftp.commands.List;
 import com.ftp.commands.Mkd;
 import com.ftp.commands.Pasv;
 import com.ftp.commands.Pwd;
+import com.ftp.commands.Retr;
 import com.ftp.commands.Rmd;
 import com.ftp.commands.Stor;
 import com.ftp.commands.Type;
@@ -52,6 +53,9 @@ public class CommandHandler {
 				break;
 			case CommandConstant.STOR :
 				commandExecutable = new Stor(writer, client, param);
+				break;
+			case CommandConstant.RETR :
+				commandExecutable = new Retr(writer, client, param);
 				break;
 			case CommandConstant.DELE :
 				commandExecutable = new Dele(writer, client, param);
