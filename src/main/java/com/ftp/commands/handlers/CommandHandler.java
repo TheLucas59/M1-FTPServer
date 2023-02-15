@@ -13,6 +13,7 @@ import com.ftp.commands.Pasv;
 import com.ftp.commands.Pwd;
 import com.ftp.commands.Retr;
 import com.ftp.commands.Rmd;
+import com.ftp.commands.Rnfr;
 import com.ftp.commands.Stor;
 import com.ftp.commands.Type;
 import com.ftpserver.exceptions.CommandException;
@@ -30,7 +31,7 @@ public class CommandHandler {
 	
 	private CommandHandler() {}
 
-	public static void handleCommand(String request, PrintWriter writer, ClientThread client) throws CommandException {
+	public static void handleCommand(String request, PrintWriter writer, ClientThread client, Object synchronizer) throws CommandException {
 		String[] input = new String[2];
 		parseInput(request, input);
 		String command = input[0].toUpperCase();
@@ -52,7 +53,7 @@ public class CommandHandler {
 				commandExecutable = new Pasv(writer, client);
 				break;
 			case CommandConstant.STOR :
-				commandExecutable = new Stor(writer, client, param);
+				commandExecutable = new Stor(writer, client, param, synchronizer);
 				break;
 			case CommandConstant.RETR :
 				commandExecutable = new Retr(writer, client, param);
@@ -61,7 +62,7 @@ public class CommandHandler {
 				commandExecutable = new Dele(writer, client, param);
 				break;
 			case CommandConstant.MKD :
-				commandExecutable = new Mkd(writer, client, param);
+				commandExecutable = new Mkd(writer, client, param, synchronizer);
 				break;
 			case CommandConstant.RMD :
 				commandExecutable = new Rmd(writer, client, param);
@@ -74,6 +75,9 @@ public class CommandHandler {
 				break;
 			case CommandConstant.CDUP:
 				commandExecutable = new Cdup(writer, client);
+				break;
+			case CommandConstant.RNFR:
+				commandExecutable = new Rnfr(writer, client);
 				break;
 		default:
 			throw new CommandNotFoundException();

@@ -33,12 +33,14 @@ public class ClientThread extends Thread {
 	private Path rootPath;
 	private Path currentPath;
 	private ServerSocket dataCanal;
+	private Object synchronizer;
 	
-	public ClientThread(Socket client, List<ClientThread> allClients, Path rootPath) {
+	public ClientThread(Socket client, List<ClientThread> allClients, Path rootPath, Object synchronizer) {
 		this.client = client;
 		this.allClients = allClients;
 		this.currentPath = rootPath;
 		this.rootPath = rootPath;
+		this.synchronizer = synchronizer;
 	}
 	
 	@Override
@@ -71,7 +73,7 @@ public class ClientThread extends Thread {
 			while((request = reader.readLine()) != null) {
 				try {
 					if(!request.isBlank() && !request.isEmpty()) {
-						CommandHandler.handleCommand(request, writer, this);
+						CommandHandler.handleCommand(request, writer, this, this.synchronizer);
 						LOGGER.info(request);
 					}
 				} catch (CommandException e) {

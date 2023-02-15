@@ -13,7 +13,7 @@ import com.ftpserver.exceptions.StorFailedException;
 import com.util.SocketUtils;
 import com.util.threads.ClientThread;
 
-public class Stor extends Command {
+public class Rnfr extends Command {
 
 	private ClientThread client;
 	private String fileName;
@@ -21,13 +21,11 @@ public class Stor extends Command {
 	private String readyPhrase = "Ok to send data.";
 	private Object syncronizer;
 
-	public Stor(PrintWriter writer, ClientThread client, String fileName, Object syncronizer) {
+	public Rnfr(PrintWriter writer, ClientThread client) {
 		super(writer);
-		this.successCode = 226;
+		this.successCode = 2;
 		this.successPhrase = "Transfer complete.";
 		this.client = client;
-		this.fileName = fileName;
-		this.syncronizer = syncronizer;
 	}
 
 	@Override

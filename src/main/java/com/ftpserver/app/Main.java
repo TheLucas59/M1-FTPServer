@@ -27,6 +27,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		Object syncronizer = new Object();
 		int port = Integer.parseInt(args[0]);
 		String root = args[1];
 		Path rootPath = Paths.get(root);
@@ -56,7 +57,7 @@ public class Main {
 			try {
 				Socket socket = server.accept();
 
-				openNewClient(socket, rootPath);
+				openNewClient(socket, rootPath, syncronizer);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -64,8 +65,8 @@ public class Main {
 
 	}
 
-	public static void openNewClient(Socket socket, Path rootPath) {
-		ClientThread client = new ClientThread(socket, openClients, rootPath);
+	public static void openNewClient(Socket socket, Path rootPath, Object syncronizer) {
+		ClientThread client = new ClientThread(socket, openClients, rootPath, syncronizer);
 		openClients.add(client);
 		client.start();
 	}

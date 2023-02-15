@@ -11,15 +11,17 @@ import com.ftpserver.exceptions.CreateDirectoryFailedException;
 import com.util.threads.ClientThread;
 
 public class Mkd extends Command {
-	
+
 	private ClientThread client;
 	private String directory;
-	
-	public Mkd(PrintWriter writer, ClientThread client, String directory) {
+	private Object synchronizer;
+
+	public Mkd(PrintWriter writer, ClientThread client, String directory, Object synchronizer) {
 		super(writer);
 		this.client = client;
 		this.directory = directory;
 		this.successCode = 257;
+		this.synchronizer = synchronizer;
 	}
 
 	@Override
@@ -30,21 +32,24 @@ public class Mkd extends Command {
 			pathFileDelimiter = "/";
 		}
 		Path newDirectory = Paths.get(pathString + pathFileDelimiter + this.directory);
-		if(Files.notExists(newDirectory)) {
-			try {
-				Files.createDirectory(newDirectory);
-			} catch (IOException e) {
+		synchronized(this.synchronizer) {
+			if(Files.notExists(newDirectory)) {
+				try {
+					Files.createDirectory(newDirectory);
+				} catch (IOException e) {
+					throw new CreateDirectoryFailedException();
+				}
+
+			} else {
 				throw new CreateDirectoryFailedException();
 			}
-		}
-		else {
-			throw new CreateDirectoryFailedException();
 		}
 		String replacement = "";
 		String endWith = "";
 		if(this.client.getCurrentPath().equals(this.client.getRootPath())) {
-			replacement = "/";
-		}else if(!this.client.getCurrentPath().endsWith("/")) {
+			replacement = "/";	
+		}
+		else if(!this.client.getCurrentPath().endsWith("/")) {
 			endWith = "/";
 		}
 		pathString = pathString.replace(this.client.getRootPath().toString(), replacement) + endWith +this.directory;
