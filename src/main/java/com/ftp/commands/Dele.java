@@ -14,13 +14,15 @@ public class Dele extends Command {
 	
 	private ClientThread client;
 	private String fileToDelete;
+	private Object synchronizer;
 	
-	public Dele(PrintWriter writer, ClientThread client, String fileToDelete) {
+	public Dele(PrintWriter writer, ClientThread client, String fileToDelete, Object synchronizer) {
 		super(writer);
 		this.client = client;
 		this.fileToDelete = fileToDelete;
 		this.successCode = 250;
 		this.successPhrase = "Delete operation successful.";
+		this.synchronizer = synchronizer;
 	}
 
 	@Override
@@ -31,10 +33,12 @@ public class Dele extends Command {
 		}
 		
 		Path delete = Paths.get(this.client.getCurrentPath().toString() + pathFileDelimiter + this.fileToDelete);
-		try {
-			Files.deleteIfExists(delete);
-		} catch (IOException e) {
-			throw new FileDoesNotExistException();
+		synchronized(this.synchronizer) {
+			try {
+				Files.deleteIfExists(delete);
+			} catch (IOException e) {
+				throw new FileDoesNotExistException();
+			}
 		}
 		return true;
 	}

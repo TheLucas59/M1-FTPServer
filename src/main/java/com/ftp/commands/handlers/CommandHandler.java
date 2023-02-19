@@ -57,19 +57,19 @@ public class CommandHandler {
 				commandExecutable = new Stor(writer, client, param, synchronizer);
 				break;
 			case CommandConstant.RETR :
-				commandExecutable = new Retr(writer, client, param);
+				commandExecutable = new Retr(writer, client, param, synchronizer);
 				break;
 			case CommandConstant.DELE :
-				commandExecutable = new Dele(writer, client, param);
+				commandExecutable = new Dele(writer, client, param, synchronizer);
 				break;
 			case CommandConstant.MKD :
 				commandExecutable = new Mkd(writer, client, param, synchronizer);
 				break;
 			case CommandConstant.RMD :
-				commandExecutable = new Rmd(writer, client, param);
+				commandExecutable = new Rmd(writer, client, param, synchronizer);
 				break;
 			case CommandConstant.LIST:
-				commandExecutable = new List(writer, client);
+				commandExecutable = new List(writer, client, synchronizer);
 				break;
 			case CommandConstant.TYPE:
 				commandExecutable = new Type(writer);

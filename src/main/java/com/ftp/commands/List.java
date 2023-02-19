@@ -33,19 +33,24 @@ public class List extends Command{
 	private int readyCode = 150;
 	private String readyPhrase = "Here comes the directory listing";
 	private ClientThread client;
+	private Object synchronizer;
 
-	public List(PrintWriter writer, ClientThread client) {
+	public List(PrintWriter writer, ClientThread client, Object synchronizer) {
 		super(writer);
 		this.client = client;
 		this.successCode = 226;
 		this.successPhrase = "Directory send OK.";
+		this.synchronizer = synchronizer;
 	}
 
 	@Override
 	protected boolean handleRequest() throws CommandException {
 		Socket dataSocket = getDataSocket();
 		this.writeReady();
-		String response = executeList();
+		String response = "";
+		synchronized(this.synchronizer) {
+			response = executeList();
+		}
 		try {
 			PrintWriter dataWriter = SocketUtils.getWritableOutputStream(dataSocket);
 			SocketUtils.sendMessageWithFlush(dataWriter, response);
