@@ -2,7 +2,6 @@ package com.ftp.commands;
 
 import java.io.PrintWriter;
 
-import com.ftpserver.exceptions.UserException;
 import com.util.threads.ClientThread;
 
 /**
@@ -28,7 +27,7 @@ public class User extends Command {
 	 * @return True if the username send by the user is equals to the one in server
 	 */
 	@Override
-	protected boolean handleRequest() throws UserException {
+	protected boolean handleRequest() {
 		this.client.setUser(this.user);
 		return true;
 	}
