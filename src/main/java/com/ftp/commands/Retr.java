@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.ftpserver.exceptions.CommandException;
+import com.ftpserver.exceptions.FileDoesNotExistException;
 import com.ftpserver.exceptions.RetrFailedException;
 import com.util.SocketUtils;
 import com.util.threads.ClientThread;
@@ -20,13 +21,15 @@ public class Retr extends Command {
 	private int readyCode = 150;
 	private String readyPhrase = "Opening BINARY mode data connection for ";
 	private Path download;
+	private Object synchronizer;
 	
-	public Retr(PrintWriter writer, ClientThread client, String fileName) {
+	public Retr(PrintWriter writer, ClientThread client, String fileName, Object synchronizer) {
 		super(writer);
 		this.successCode = 226;
 		this.successPhrase = "Transfer complete.";
 		this.client = client;
 		this.fileName = fileName;
+		this.synchronizer = synchronizer;
 	}
 
 	@Override
@@ -55,12 +58,16 @@ public class Retr extends Command {
 		SocketUtils.sendMessageWithFlush(this.writer, response.toString());
 	}
 
-	private void sendFile() throws IOException {
+	private void sendFile() throws IOException, FileDoesNotExistException {
 		Socket dataSocket = this.client.getDataCanal().accept();
 		OutputStream stream = dataSocket.getOutputStream();
 		byte[] fileRead = null;
-		if(Files.exists(download)) {
-			fileRead = Files.readAllBytes(this.download);
+		synchronized(this.synchronizer) {
+			if(Files.exists(download)) {
+				fileRead = Files.readAllBytes(this.download);
+			}else {
+				throw new FileDoesNotExistException();
+			}
 		}
 		
 		stream.write(fileRead);

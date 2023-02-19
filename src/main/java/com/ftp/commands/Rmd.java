@@ -14,13 +14,15 @@ public class Rmd extends Command {
 
 	private ClientThread client;
 	private String directory;
+	private Object synchronizer;
 	
-	public Rmd(PrintWriter writer, ClientThread client, String directory) {
+	public Rmd(PrintWriter writer, ClientThread client, String directory, Object synchronizer) {
 		super(writer);
 		this.client = client;
 		this.directory = directory;
 		this.successCode = 250;
 		this.successPhrase = "Remove directory operation successful.";
+		this.synchronizer = synchronizer;
 	}
 
 	@Override
@@ -32,10 +34,12 @@ public class Rmd extends Command {
 		
 		Path newDirectory = Paths.get(this.client.getCurrentPath().toString() + pathFileDelimiter + this.directory);
 		if(Files.exists(newDirectory)) {
-			try {
-				Files.delete(newDirectory);
-			} catch (IOException e) {
-				throw new RemoveDirectoryFailedException();
+			synchronized(this.synchronizer) {
+				try {
+					Files.delete(newDirectory);
+				} catch (IOException e) {
+					throw new RemoveDirectoryFailedException();
+				}
 			}
 		}
 		else {
