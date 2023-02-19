@@ -5,6 +5,11 @@ import java.io.PrintWriter;
 import com.ftpserver.exceptions.CommandException;
 import com.util.threads.ClientThread;
 
+/**
+ * Pwd return the current path where the client is located
+ * @author Lucas Plé
+ *
+ */
 public class Pwd extends Command {
 	
 	private ClientThread client;

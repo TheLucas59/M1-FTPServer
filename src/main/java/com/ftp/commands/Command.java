@@ -21,6 +21,11 @@ public abstract class Command {
 		this.writer = writer;
 	}
 	
+	/**
+	 * Run a command and write his output on client
+	 * @return True on success, False on fail
+	 * @throws CommandException the specific exception to the command
+	 */
 	public boolean run() throws CommandException {
 		if(this.handleRequest()) {
 			this.writeSuccess();
@@ -29,12 +34,15 @@ public abstract class Command {
 		return false;
 	}
 	/**
-	 * 
+	 * Implements the specific behavior of each commands
 	 * @return True if the command returned successfully
 	 * @throws CommandException on error, see specific command for error cases
 	 */
 	protected abstract boolean handleRequest() throws CommandException;
 	
+	/**
+	 * Write the result of the command on the client socket
+	 */
 	protected void writeSuccess() {
 		StringBuilder response = new StringBuilder();
 		response.append(this.successCode);

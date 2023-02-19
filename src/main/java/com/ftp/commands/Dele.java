@@ -10,6 +10,11 @@ import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.FileDoesNotExistException;
 import com.util.threads.ClientThread;
 
+/**
+ * Dele is used to delete a file
+ * @author Lucas Plé
+ *
+ */
 public class Dele extends Command {
 	
 	private ClientThread client;

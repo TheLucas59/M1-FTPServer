@@ -4,6 +4,11 @@ import java.io.PrintWriter;
 
 import com.ftpserver.exceptions.CommandException;
 
+/**
+ * Type is used to enable binary transfert mode
+ * @author Aurélien Plancke
+ *
+ */
 public class Type extends Command {
 	
 	public Type(PrintWriter writer) {

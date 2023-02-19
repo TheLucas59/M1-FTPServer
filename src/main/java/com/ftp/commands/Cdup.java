@@ -7,6 +7,11 @@ import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.UnautorizedException;
 import com.util.threads.ClientThread;
 
+/**
+ * Cdup is used to go up one level in directory hierarchy.
+ * @author Aurélien Plancke
+ *
+ */
 public class Cdup extends Command {
 
 	ClientThread client; 
@@ -21,7 +26,7 @@ public class Cdup extends Command {
 	@Override
 	protected boolean handleRequest() throws CommandException {
 		String currentPath = client.getCurrentPath().toString();
-		if(currentPath.toString().equals(client.getRootPath().toString())) {
+		if(currentPath.equals(client.getRootPath().toString())) {
 			throw new UnautorizedException();
 		}
 		

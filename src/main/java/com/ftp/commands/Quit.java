@@ -6,6 +6,11 @@ import java.io.PrintWriter;
 import com.ftpserver.exceptions.CommandException;
 import com.util.threads.ClientThread;
 
+/**
+ * Quit exit the client connection.
+ * @author Lucas Plé
+ *
+ */
 public class Quit extends Command {
 	
 	private ClientThread client;

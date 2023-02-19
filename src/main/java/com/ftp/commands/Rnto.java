@@ -11,6 +11,11 @@ import com.ftpserver.exceptions.RnfrRequiredFirstException;
 import com.ftpserver.exceptions.RntoFailedException;
 import com.util.threads.ClientThread;
 
+/**
+ * Rnto is used to give the path of a file in which an other one will be rename or moved
+ * @author Lucas Plé
+ *
+ */
 public class Rnto extends Command {
 	
 	private ClientThread client;

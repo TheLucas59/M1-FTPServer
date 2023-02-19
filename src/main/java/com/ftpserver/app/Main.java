@@ -25,7 +25,7 @@ public class Main {
 
 	private static List<ClientThread> openClients = new ArrayList<>();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		Object syncronizer = new Object();
 		int port = Integer.parseInt(args[0]);

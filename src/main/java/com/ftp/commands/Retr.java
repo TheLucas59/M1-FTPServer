@@ -14,6 +14,11 @@ import com.ftpserver.exceptions.RetrFailedException;
 import com.util.SocketUtils;
 import com.util.threads.ClientThread;
 
+/**
+ * Retr download a file from the server to the client
+ * @author Lucas Plé
+ *
+ */
 public class Retr extends Command {
 	
 	private ClientThread client;

@@ -9,6 +9,11 @@ import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.FailedChangeDirectory;
 import com.util.threads.ClientThread;
 
+/**
+ * Cwd is used to change the current working directory
+ * @author Lucas Plé
+ *
+ */
 public class Cwd extends Command {
 
 	private ClientThread client;

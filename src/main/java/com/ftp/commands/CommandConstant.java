@@ -1,5 +1,10 @@
 package com.ftp.commands;
 
+/**
+ * Constant string of the expected commands name
+ * @author Aurélien Plancke
+ *
+ */
 public class CommandConstant {
 	public static final String USER = "USER";
 	public static final String PASS = "PASS";

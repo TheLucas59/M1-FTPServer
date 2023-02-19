@@ -13,6 +13,11 @@ import com.ftpserver.exceptions.StorFailedException;
 import com.util.SocketUtils;
 import com.util.threads.ClientThread;
 
+/**
+ * Stor Store a file from client to server
+ * @author Lucas Plé Aurélien Plancke
+ *
+ */
 public class Stor extends Command {
 
 	private ClientThread client;

@@ -10,6 +10,11 @@ import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.CreateDirectoryFailedException;
 import com.util.threads.ClientThread;
 
+/**
+ * Mkd is used to create a directory
+ * @author Lucas Plé
+ *
+ */
 public class Mkd extends Command {
 
 	private ClientThread client;

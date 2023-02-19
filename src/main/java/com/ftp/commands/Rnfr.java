@@ -9,6 +9,11 @@ import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.RnfrFailedException;
 import com.util.threads.ClientThread;
 
+/**
+ * Rnfr Specify the file that will be renamed or moved
+ * @author Lucas Plé
+ *
+ */
 public class Rnfr extends Command {
 
 	private ClientThread client;

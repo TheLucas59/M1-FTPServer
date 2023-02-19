@@ -10,6 +10,11 @@ import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.RemoveDirectoryFailedException;
 import com.util.threads.ClientThread;
 
+/**
+ * Rmd remove a directory and its content
+ * @author Lucas Plé
+ *
+ */
 public class Rmd extends Command {
 
 	private ClientThread client;

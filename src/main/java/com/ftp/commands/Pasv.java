@@ -11,6 +11,11 @@ import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.PasvFailedException;
 import com.util.threads.ClientThread;
 
+/**
+ * Pasv is used to get an other socket for data. It return an IP address and a port.
+ * @author Lucas Plé
+ *
+ */
 public class Pasv extends Command {
 	
 	private ClientThread client;
