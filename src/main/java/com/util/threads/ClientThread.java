@@ -32,6 +32,7 @@ public class ClientThread extends Thread {
 	private boolean connected = false;
 	private Path rootPath;
 	private Path currentPath;
+	private Path pathToRename;
 	private ServerSocket dataCanal;
 	private Object synchronizer;
 	
@@ -73,8 +74,8 @@ public class ClientThread extends Thread {
 			while((request = reader.readLine()) != null) {
 				try {
 					if(!request.isBlank() && !request.isEmpty()) {
-						CommandHandler.handleCommand(request, writer, this, this.synchronizer);
 						LOGGER.info(request);
+						CommandHandler.handleCommand(request, writer, this, this.synchronizer);
 					}
 				} catch (CommandException e) {
 					SocketUtils.sendMessageWithFlush(writer, e.toString());
@@ -135,5 +136,13 @@ public class ClientThread extends Thread {
 
 	public void setDataCanal(ServerSocket dataCanal) {
 		this.dataCanal = dataCanal;
+	}
+
+	public Path getPathToRename() {
+		return pathToRename;
+	}
+
+	public void setPathToRename(Path pathToRename) {
+		this.pathToRename = pathToRename;
 	}
 }

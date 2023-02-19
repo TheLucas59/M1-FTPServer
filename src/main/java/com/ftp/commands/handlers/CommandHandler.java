@@ -14,6 +14,7 @@ import com.ftp.commands.Pwd;
 import com.ftp.commands.Retr;
 import com.ftp.commands.Rmd;
 import com.ftp.commands.Rnfr;
+import com.ftp.commands.Rnto;
 import com.ftp.commands.Stor;
 import com.ftp.commands.Type;
 import com.ftpserver.exceptions.CommandException;
@@ -77,7 +78,10 @@ public class CommandHandler {
 				commandExecutable = new Cdup(writer, client);
 				break;
 			case CommandConstant.RNFR:
-				commandExecutable = new Rnfr(writer, client);
+				commandExecutable = new Rnfr(writer, client, param);
+				break;
+			case CommandConstant.RNTO:
+				commandExecutable = new Rnto(writer, client, param, synchronizer);
 				break;
 		default:
 			throw new CommandNotFoundException();
