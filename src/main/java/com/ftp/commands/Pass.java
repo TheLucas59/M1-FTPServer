@@ -13,10 +13,16 @@ import com.ftpserver.exceptions.PassException;
 public class Pass extends Command {
 	
 	private String password;
+	private String expectedPassword;
+	private String user;
+	private String expectedUser;
 	
-	public Pass(PrintWriter writer, String password) {
+	public Pass(PrintWriter writer, String user, String expectedUser, String password, String expectedPassword) {
 		super(writer);
 		this.password = password;
+		this.expectedPassword = expectedPassword;
+		this.user = user;
+		this.expectedUser = expectedUser;
 		this.successCode = 230;
 		this.successPhrase = "Login successful.";
 	}
@@ -27,7 +33,7 @@ public class Pass extends Command {
 	 */
 	@Override
 	protected boolean handleRequest() throws CommandException {
-		if(!this.password.isEmpty()) {
+		if(this.expectedPassword.equals(password) && this.expectedUser.equals(user)) {
 			return true;
 		}
 		throw new PassException();

@@ -3,6 +3,7 @@ package com.ftp.commands;
 import java.io.PrintWriter;
 
 import com.ftpserver.exceptions.UserException;
+import com.util.threads.ClientThread;
 
 /**
  * User is used to send and check the username of the user
@@ -11,15 +12,15 @@ import com.ftpserver.exceptions.UserException;
  */
 public class User extends Command {
 	
-	private final String EXPECTED_USER = "anonymous";
-	
 	private String user;
+	private ClientThread client;
 
-	public User(PrintWriter writer, String user) {
+	public User(PrintWriter writer, String user, ClientThread client) {
 		super(writer);
 		this.user = user;
 		this.successCode = 331;
 		this.successPhrase = "Please specify the password.";
+		this.client = client;
 	}
 
 	/**
@@ -28,10 +29,8 @@ public class User extends Command {
 	 */
 	@Override
 	protected boolean handleRequest() throws UserException {
-		if(this.EXPECTED_USER.equals(this.user)) {
-			return true;
-		}
-		throw new UserException();
+		this.client.setUser(this.user);
+		return true;
 	}
 
 }

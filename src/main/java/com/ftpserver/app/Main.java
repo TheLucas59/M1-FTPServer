@@ -29,6 +29,13 @@ public class Main {
 
 		Object syncronizer = new Object();
 		int port = Integer.parseInt(args[0]);
+		String authentification = args[2];
+		String[] userAndPassword = authentification.split(":");
+		if(userAndPassword.length != 2) {
+			LOGGER.error("Please specify an user and a password like this <user:password>.");
+			System.exit(1);
+		}
+		
 		String root = args[1];
 		Path rootPath = Paths.get(root);
 		if (Files.notExists(rootPath)) {
@@ -57,7 +64,7 @@ public class Main {
 			try {
 				Socket socket = server.accept();
 
-				openNewClient(socket, rootPath, syncronizer);
+				openNewClient(socket, rootPath, syncronizer, userAndPassword);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -65,8 +72,8 @@ public class Main {
 
 	}
 
-	public static void openNewClient(Socket socket, Path rootPath, Object syncronizer) {
-		ClientThread client = new ClientThread(socket, openClients, rootPath, syncronizer);
+	public static void openNewClient(Socket socket, Path rootPath, Object syncronizer, String[] userAndPassword) {
+		ClientThread client = new ClientThread(socket, openClients, rootPath, syncronizer, userAndPassword[0], userAndPassword[1]);
 		openClients.add(client);
 		client.start();
 	}

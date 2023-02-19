@@ -19,7 +19,7 @@ import com.ftp.commands.Stor;
 import com.ftp.commands.Type;
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.CommandNotFoundException;
-import com.ftpserver.exceptions.NoChangeFromGuestUserException;
+import com.ftpserver.exceptions.NoChangeToAnotherUserException;
 import com.ftpserver.exceptions.UserAlreadyLoggedInException;
 import com.util.threads.ClientThread;
 
@@ -41,7 +41,7 @@ public class CommandHandler {
 		Command commandExecutable = null;
 		switch(command){
 			case CommandConstant.USER :
-				throw new NoChangeFromGuestUserException();
+				throw new NoChangeToAnotherUserException();
 			case CommandConstant.PASS :
 				throw new UserAlreadyLoggedInException();
 			case CommandConstant.PWD :

@@ -12,6 +12,7 @@ import com.ftpserver.exceptions.AuthenticateFirstException;
 import com.ftpserver.exceptions.CommandException;
 import com.ftpserver.exceptions.LoginWithUserFirstException;
 import com.ftpserver.exceptions.PassException;
+import com.util.threads.ClientThread;
 
 /**
  * Utility class used to handle the different connection events.
@@ -22,8 +23,8 @@ public class AuthenticationHandler {
 	
 	private AuthenticationHandler() {}
 	
-	public static boolean connect(String login, PrintWriter writer, BufferedReader reader) throws IOException, CommandException {
-		Command user = new User(writer, login);
+	public static boolean connect(String login, PrintWriter writer, BufferedReader reader, ClientThread client) throws IOException, CommandException {
+		Command user = new User(writer, login, client);
 		if(user.run()) {
 			String passLine = reader.readLine();
 			String[] commandAndParam = passLine.split(" ");
@@ -34,7 +35,7 @@ public class AuthenticationHandler {
 					password = commandAndParam[1];
 				}
 				
-				Command pass = new Pass(writer, password);
+				Command pass = new Pass(writer, login, client.getExpectedUser(), password, client.getExpectedPassword());
 				return pass.run();
 			}
 			throw new PassException();

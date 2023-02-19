@@ -5,11 +5,11 @@ package com.ftpserver.exceptions;
  * @author Lucas Plé
  *
  */
-public class NoChangeFromGuestUserException extends CommandException {
+public class NoChangeToAnotherUserException extends CommandException {
 
 	private static final long serialVersionUID = -1515334143398162032L;
 
-	public NoChangeFromGuestUserException() {
-		super(530, "Can't change from guest user.");
+	public NoChangeToAnotherUserException() {
+		super(530, "Can't change from another user.");
 	}
 }

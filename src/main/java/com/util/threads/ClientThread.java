@@ -35,13 +35,17 @@ public class ClientThread extends Thread {
 	private Path pathToRename;
 	private ServerSocket dataCanal;
 	private Object synchronizer;
+	private String expectedUser;
+	private String expectedPassword;
 	
-	public ClientThread(Socket client, List<ClientThread> allClients, Path rootPath, Object synchronizer) {
+	public ClientThread(Socket client, List<ClientThread> allClients, Path rootPath, Object synchronizer, String expectedUser, String expectedPassword) {
 		this.client = client;
 		this.allClients = allClients;
 		this.currentPath = rootPath;
 		this.rootPath = rootPath;
 		this.synchronizer = synchronizer;
+		this.expectedUser = expectedUser;
+		this.expectedPassword = expectedPassword;
 	}
 	
 	@Override
@@ -93,7 +97,7 @@ public class ClientThread extends Thread {
 
 	private void authenticate(BufferedReader reader, PrintWriter writer, String param) throws IOException {
 		try {
-			this.connected = AuthenticationHandler.connect(param, writer, reader);
+			this.connected = AuthenticationHandler.connect(param, writer, reader, this);
 		}
 		catch(CommandException e) {
 			SocketUtils.sendMessageWithFlush(writer, e.toString());
@@ -144,5 +148,17 @@ public class ClientThread extends Thread {
 
 	public void setPathToRename(Path pathToRename) {
 		this.pathToRename = pathToRename;
+	}
+
+	public void setUser(String user) {
+		this.expectedUser = user;
+	}
+
+	public String getExpectedUser() {
+		return expectedUser;
+	}
+
+	public String getExpectedPassword() {
+		return expectedPassword;
 	}
 }
