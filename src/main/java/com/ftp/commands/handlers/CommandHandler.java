@@ -11,6 +11,7 @@ import com.ftp.commands.List;
 import com.ftp.commands.Mkd;
 import com.ftp.commands.Pasv;
 import com.ftp.commands.Pwd;
+import com.ftp.commands.Quit;
 import com.ftp.commands.Retr;
 import com.ftp.commands.Rmd;
 import com.ftp.commands.Rnfr;
@@ -32,7 +33,7 @@ public class CommandHandler {
 	
 	private CommandHandler() {}
 
-	public static void handleCommand(String request, PrintWriter writer, ClientThread client, Object synchronizer) throws CommandException {
+	public static void handleCommand(String request, PrintWriter writer, ClientThread client) throws CommandException {
 		String[] input = new String[2];
 		parseInput(request, input);
 		String command = input[0].toUpperCase();
@@ -54,22 +55,22 @@ public class CommandHandler {
 				commandExecutable = new Pasv(writer, client);
 				break;
 			case CommandConstant.STOR :
-				commandExecutable = new Stor(writer, client, param, synchronizer);
+				commandExecutable = new Stor(writer, client, param, client.getSynchronizer());
 				break;
 			case CommandConstant.RETR :
-				commandExecutable = new Retr(writer, client, param, synchronizer);
+				commandExecutable = new Retr(writer, client, param, client.getSynchronizer());
 				break;
 			case CommandConstant.DELE :
-				commandExecutable = new Dele(writer, client, param, synchronizer);
+				commandExecutable = new Dele(writer, client, param, client.getSynchronizer());
 				break;
 			case CommandConstant.MKD :
-				commandExecutable = new Mkd(writer, client, param, synchronizer);
+				commandExecutable = new Mkd(writer, client, param, client.getSynchronizer());
 				break;
 			case CommandConstant.RMD :
-				commandExecutable = new Rmd(writer, client, param, synchronizer);
+				commandExecutable = new Rmd(writer, client, param, client.getSynchronizer());
 				break;
 			case CommandConstant.LIST:
-				commandExecutable = new List(writer, client, synchronizer);
+				commandExecutable = new List(writer, client, client.getSynchronizer());
 				break;
 			case CommandConstant.TYPE:
 				commandExecutable = new Type(writer);
@@ -81,12 +82,17 @@ public class CommandHandler {
 				commandExecutable = new Rnfr(writer, client, param);
 				break;
 			case CommandConstant.RNTO:
-				commandExecutable = new Rnto(writer, client, param, synchronizer);
+				commandExecutable = new Rnto(writer, client, param, client.getSynchronizer());
+				break;
+			case CommandConstant.QUIT:
+				commandExecutable = new Quit(writer, client);
 				break;
 		default:
 			throw new CommandNotFoundException();
 		}
-		commandExecutable.run();
+		if(!commandExecutable.run()) {
+			client.interrupt();
+		}
 	}
 	
 	public static void parseInput(String request, String[] input) {

@@ -16,6 +16,7 @@ public class CommandConstant {
 	public static final String CDUP = "CDUP";
 	public static final String RNFR = "RNFR";
 	public static final String RNTO = "RNTO";
+	public static final String QUIT = "QUIT";
 	
 	private CommandConstant() {}
 }

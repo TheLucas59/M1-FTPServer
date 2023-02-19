@@ -56,20 +56,22 @@ public class Main {
 		try {
 			server = new ServerSocket(port);
 		} catch (NumberFormatException | IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Impossible to initiate the server.", e);
+			System.exit(1);
 		}
 
 		while (true) {
-			System.out.println("Waiting a client ...");
+			LOGGER.info("Waiting a client ...");
 			try {
 				Socket socket = server.accept();
 
 				openNewClient(socket, rootPath, syncronizer, userAndPassword);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOGGER.error(e);
+				System.exit(1);
 			}
 		}
-
+		
 	}
 
 	public static void openNewClient(Socket socket, Path rootPath, Object syncronizer, String[] userAndPassword) {

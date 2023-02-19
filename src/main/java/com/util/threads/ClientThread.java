@@ -75,11 +75,11 @@ public class ClientThread extends Thread {
 				}
 			}
 			
-			while((request = reader.readLine()) != null) {
+			while(!this.client.isClosed() && (request = reader.readLine()) != null) {
 				try {
 					if(!request.isBlank() && !request.isEmpty()) {
 						LOGGER.info(request);
-						CommandHandler.handleCommand(request, writer, this, this.synchronizer);
+						CommandHandler.handleCommand(request, writer, this);
 					}
 				} catch (CommandException e) {
 					SocketUtils.sendMessageWithFlush(writer, e.toString());
@@ -88,10 +88,11 @@ public class ClientThread extends Thread {
 			
 			LOGGER.info("User disconnected");
 			this.allClients.remove(this);
-			Thread.currentThread().interrupt();
+			this.interrupt();
 		}
 		catch(IOException ioe) {
-			LOGGER.error(ioe);
+			LOGGER.error("An error has occured.", ioe);
+			this.interrupt();
 		}
 	}
 
@@ -120,6 +121,22 @@ public class ClientThread extends Thread {
 		catch(CommandException e) {
 			SocketUtils.sendMessageWithFlush(writer, e.toString());
 		}
+	}
+
+	public Socket getClient() {
+		return client;
+	}
+
+	public boolean isConnected() {
+		return connected;
+	}
+
+	public Object getSynchronizer() {
+		return synchronizer;
+	}
+
+	public List<ClientThread> getAllClients() {
+		return allClients;
 	}
 
 	public Path getRootPath() {

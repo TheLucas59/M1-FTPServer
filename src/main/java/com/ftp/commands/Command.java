@@ -35,7 +35,7 @@ public abstract class Command {
 	 */
 	protected abstract boolean handleRequest() throws CommandException;
 	
-	private void writeSuccess() {
+	protected void writeSuccess() {
 		StringBuilder response = new StringBuilder();
 		response.append(this.successCode);
 		response.append(" ");
