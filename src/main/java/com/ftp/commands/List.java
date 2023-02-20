@@ -88,15 +88,17 @@ public class List extends Command{
 		LocalDateTime modifiedTime = LocalDateTime.ofInstant(Files.getLastModifiedTime(path).toInstant(), ZoneId.systemDefault());
 		DateTimeFormatter dtf; 
 		if(modifiedTime.getYear() == LocalDateTime.now().getYear()) {
-			dtf = DateTimeFormatter.ofPattern("MMM-dd-HH:mm", Locale.ENGLISH);
+			dtf = DateTimeFormatter.ofPattern("MMM dd HH:mm", Locale.ENGLISH);
 		}else {
-			dtf = DateTimeFormatter.ofPattern("MMM-dd-yyyy", Locale.ENGLISH);
+			dtf = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
 		}
 		strb.append(modifiedTime.format(dtf));
 		strb.append(" ");
 		
 		strb.append(path.getFileName());
 		strb.append("\n");
+		
+		System.out.println(strb.toString());
 		return strb.toString();
 
 	}
