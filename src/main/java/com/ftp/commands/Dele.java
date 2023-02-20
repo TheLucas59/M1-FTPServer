@@ -40,7 +40,7 @@ public class Dele extends Command {
 		Path delete = Paths.get(this.client.getCurrentPath().toString() + pathFileDelimiter + this.fileToDelete);
 		synchronized(this.synchronizer) {
 			try {
-				Files.deleteIfExists(delete);
+				Files.delete(delete);
 			} catch (IOException e) {
 				throw new FileDoesNotExistException();
 			}

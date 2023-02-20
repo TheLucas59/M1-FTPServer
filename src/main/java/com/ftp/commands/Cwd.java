@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.ftpserver.exceptions.CommandException;
-import com.ftpserver.exceptions.FailedChangeDirectory;
+import com.ftpserver.exceptions.FailedChangeDirectoryException;
 import com.util.threads.ClientThread;
 
 /**
@@ -45,7 +45,7 @@ public class Cwd extends Command {
 			this.client.setCurrentPath(newPath);
 		}
 		else {
-			throw new FailedChangeDirectory();
+			throw new FailedChangeDirectoryException();
 		}
 		return true;
 	}

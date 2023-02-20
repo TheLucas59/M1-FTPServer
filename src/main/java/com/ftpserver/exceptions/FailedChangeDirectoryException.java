@@ -5,11 +5,11 @@ package com.ftpserver.exceptions;
  * @author Aurélien Plancke
  *
  */
-public class FailedChangeDirectory extends CommandException {
+public class FailedChangeDirectoryException extends CommandException {
 
 	private static final long serialVersionUID = 734101241501502973L;
 
-	public FailedChangeDirectory() {
+	public FailedChangeDirectoryException() {
 		super(550, "Failed to change directory.");
 	}
 

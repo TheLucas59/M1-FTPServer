@@ -28,6 +28,10 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 
 		Object syncronizer = new Object();
+		if(args.length != 3) {
+			LOGGER.error("Wrong usage, please use [port] [RootDirectoryPath] [user:password]");
+			System.exit(1);
+		}
 		int port = Integer.parseInt(args[0]);
 		String authentification = args[2];
 		String[] userAndPassword = authentification.split(":");
