@@ -9,7 +9,7 @@ import com.ftpserver.exceptions.UnautorizedException;
 public class TestCdup extends TestAbstractCommand {
 
 	@Test
-	protected void testUnautorizedException() {
+	public void testUnautorizedException() {
 		assertThrows(UnautorizedException.class, () -> {
 			this.command.run();
 		});
@@ -17,7 +17,7 @@ public class TestCdup extends TestAbstractCommand {
 	
 	
 	@Override
-	protected Command init() {
+	public Command init() {
 		return new Cdup(null, client);
 	}
 

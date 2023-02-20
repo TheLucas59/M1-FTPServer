@@ -56,7 +56,7 @@ Pour passer en mode CLI il faut utiliser un utilitaire comme netcat de la façon
 nc localhost [port]
 ```
 
-Le fonctionnement est le même que sur un serveur FTP classique, vous retrouverez les commandes implémentées dans la partie [Commandes implémentées](#Commandes-implémentées)
+Le fonctionnement est le même que sur un serveur FTP classique, vous retrouverez les commandes implémentées dans la partie `Commandes implémentées`.
 
 ## Architecture du projet
 

@@ -8,13 +8,13 @@ import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
-import com.ftpserver.exceptions.FileDoesNotExistException;
+import com.ftpserver.exceptions.RnfrFailedException;
 
-class TestDele extends TestAbstractCommand{
-
+public class TestRnfr extends TestAbstractCommand {
+	
 	@Test
-	public void testFileDoesNotExistException() throws IOException {
-		assertThrows(FileDoesNotExistException.class, () -> {
+	public void testRnfrFailedException() throws IOException {
+		assertThrows(RnfrFailedException.class, () -> {
 			this.command.run();
 		});
 	}
@@ -22,7 +22,7 @@ class TestDele extends TestAbstractCommand{
 	@Override
 	public Command init() {
 		Path pathTest = Paths.get(this.root.toString() + "/testFile");
-		return new Dele(writer, client, pathTest.toString(), pathTest);
+		return new Rnfr(writer, client, pathTest.toString());
 	}
 
 }

@@ -12,19 +12,18 @@ import com.ftpserver.exceptions.CreateDirectoryFailedException;
 
 class TestMkd extends TestAbstractCommand {
 
-	String dirToCreate = this.root.toString() + "/anotherTest";
+	String dirToCreate = this.root.toString() + "/testDirectory";
 
 	@Test
-	protected void testCreateDirectoryFailedException() throws IOException {
-	Files.createDirectory(Paths.get(dirToCreate));
-	assertThrows(CreateDirectoryFailedException.class, () ->{
-		this.command.run();
-	});
-}
-		
+	public void testCreateDirectoryFailedException() throws IOException {
+		Files.createDirectory(Paths.get(dirToCreate));
+		assertThrows(CreateDirectoryFailedException.class, () ->{
+			this.command.run();
+		});
+	}
 
 	@Override
-	protected Command init() {
+	public Command init() {
 		return new Mkd(writer, client, dirToCreate, client);
 	}
 

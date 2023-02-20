@@ -10,9 +10,9 @@ import com.ftpserver.exceptions.CommandNotFoundException;
 class TestCommandHandler {
 
 	@Test
-	protected void testExceptionThrown() throws CommandException {
+	public void testExceptionThrown() throws CommandException {
 		assertThrows(CommandNotFoundException.class, () -> {
-			CommandHandler.handleCommand("test", null, null);			
+			CommandHandler.handleCommand("COMMAND FAIL", null, null);			
 		});
 	}
 

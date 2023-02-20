@@ -6,18 +6,18 @@ import org.junit.jupiter.api.Test;
 
 import com.ftpserver.exceptions.PassException;
 
-class TestPwd extends TestAbstractCommand{
+class TestPass extends TestAbstractCommand{
 
 	@Test
-	protected void testPassException() {
+	public void testPassException() {
 		assertThrows(PassException.class, () ->{
 			this.command.run();
 		});
 	}
 
 	@Override
-	protected Command init() {
-		return new Pass(writer, "expected", "not expected", "expected", "not expected");
+	public Command init() {
+		return new Pass(writer, "expectedUser", "notExpectedUser", "expectedPassword", "notExpectedPassword");
 	}
 
 }
