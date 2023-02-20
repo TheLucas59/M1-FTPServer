@@ -1,10 +1,11 @@
-# Client FTP
-**Auteurs** : **Plancke** Aurélien & **Plé** Lucas M1 E-Services
-aurelien.plancke.etu@univ-lille.fr
-lucas.ple.etu@univ-lille.fr
+# Serveur FTP
+## Auteurs : 
+**Plancke** Aurélien aurelien.plancke.etu@univ-lille.fr
 
-Ce programme server ftp a été réalisé en Java dans le cadre des cours de Système Répartis en Master 1 E-Services.
-Il a pour but de se comporter en tant que serveur FTP et de gérer les connexions clientes. Ce serveur les commandes de bases ainsi que les connexions concurencielles.
+**Plé** Lucas M1 E-Services lucas.ple.etu@univ-lille.fr
+
+Ce programme a été réalisé en Java dans le cadre des cours de Système Répartis en Master 1 E-Services.
+Il a pour but de se comporter comme un serveur FTP et de gérer les connexions clientes. Ce serveur implémente les commandes de bases ainsi que les connexions concurencielles.
 
 ## Installation
 
@@ -50,15 +51,15 @@ Pour passer en mode CLI il faut utiliser un utilitaire comme netcat de la façon
 nc localhost [port]
 ```
 
-Le fonctionnement est le même que sur un serveur ftp classique, vous retrouverez les commandes implémentées dans la partie [Commandes implémentées](#Commandes-implémentées)
+Le fonctionnement est le même que sur un serveur FTP classique, vous retrouverez les commandes implémentées dans la partie [Commandes implémentées](#Commandes-implémentées)
 
 ## Architecture du projet
 
 Le projet, developpé en Java implémente de nombreux principes de la programmation objet. 
 
-Afin de gérer facilement les commandes, celles-ci héritent toutes de la classe abstraite `Command`. Cette classe permet de centraliser le comportement commun, tel que l'écriture du résultat d'une commande, ou encore le code de succès. De plus cette classe abstraite implémente au sein de sa fonction `handleRequest`, une exception abstraite de type CommandException. Cette exception abstraite permet d'implémenter pour chaque commande sa propre exception et ses messages/ code d'erreur.
+Afin de gérer facilement les commandes, celles-ci héritent toutes de la classe abstraite `Command`. Cette classe permet de centraliser le comportement commun, tel que l'écriture du résultat d'une commande, ou encore le code de succès. De plus cette classe abstraite implémente au sein de sa fonction `handleRequest`, une exception abstraite de type CommandException. Cette exception abstraite permet d'implémenter pour chaque commande sa propre exception et ses messages/ code d'erreur. Des diagrammes UML de ces parties du serveur sont disponibles plus loin dans ce rapport.
 
-Pour ajouter une commande le processus est donc simple, il suffit d'étendre la classe Command, et d'implémenter le comportement particulier de cette commande dans la méthode héritée `handleRequest`. Comme la classe mère gère grâce au run le fait d'appeler cette méthode ainsi que la méthode `writeSuccess`, le comportement est la seule chose à implémenter.
+Pour ajouter une commande le processus est donc simple, il suffit d'étendre la classe Command, et d'implémenter le comportement particulier de cette commande dans la méthode héritée `handleRequest`. Comme la classe mère gère grâce à la méthode `run` le fait d'appeler cette méthode ainsi que la méthode `writeSuccess`, le comportement de la commande est la seule chose à implémenter.
 
 
 ## Commandes implémentées
@@ -107,7 +108,7 @@ protected boolean handleRequest() throws CommandException {
 }
 ```
 
-Création du serveur, acceptation de la connexion et création du thread client. C'est la base du projet et le point le plus important. Le fait de passer par des thread permet d'avoir un serveur qui accepte plus d'un utilisateur à la fois. Chaque client, à sa connexion au serveur se voit attribué une socket du serveur réservée à la connexion avec ce client.
+Création du serveur, acceptation de la connexion et création du thread client. C'est la base du projet et le point le plus important. Le fait de passer par des threads permet d'avoir un serveur qui accepte plus d'un utilisateur à la fois. Chaque client a sa connexion au serveur et elle est représentée en Java par un objet `Socket`. Cette dernière représente donc une connexion entre le serveur et un client. Il y a autant de `Socket` que de clients connectés sur le serveur.
 
 ```java
 [...]
@@ -136,7 +137,7 @@ public static void openNewClient(Socket socket, Path rootPath, Object syncronize
 }
 ```
 
-`handleCommand` est la base de l'interaction entre le client et le serveur. En effet, le client interagit avec le serveur uniquement par le biais de commande bien précise, certaines attendant des paramètres, d'autres non. Cette fonction à pour but d'identifier et de rediriger la commande vers l'execution qui lui corresponds.
+La méthode `handleCommand` est la base de l'interaction entre le client et le serveur. En effet, le client interagit avec le serveur uniquement par le biais de commandes bien précises; certaines attendant des paramètres, d'autres non. Cette fonction à pour but d'identifier la commande que le client souhaite exécuter et de lancer cette commande. Si la commande demandée par le client n'est pas reconnue, on renvoie un message d'erreur disant que cette méthode n'est pas implémentée par ce serveur.
 
 ```java
 public static void handleCommand(String request, PrintWriter writer, ClientThread client) throws CommandException {
@@ -202,7 +203,7 @@ public static void handleCommand(String request, PrintWriter writer, ClientThrea
 }
 ```
 
-Syncronize sur la commande store. Les synchronize sont important dans le cadre du serveur. En effet il peut arriver que deux (ou plus) clients veuillent accéder, modifier ou créer la même ressources, ce qui pourrait provoquer perte de donnée ou incohérence. Ici le synchronize permet d'éviter que ce phénoméne se produise. 
+Cet exemple de code montre l'utilisation des blocs `synchronized` dans le serveur. Les `synchronized` sont importants car il peut arriver que deux (ou plus) clients veuillent accéder, modifier ou créer la même ressource, ce qui pourrait provoquer perte de donnée ou incohérence. Ici le `synchronized` permet d'éviter que ce phénoméne se produise en bloquant la ressource pour un seul client le temps que le code contenu dans le bloc s'exécute. Ici, on réalise un `STOR`. On synchronise la vérification de l'existence du fichier, la création de celui-ci s'il n'existe pas et l'écriture sur le disque des données du fichier. Pendant ce temps, les autres clients n'ont pas accès au système de fichiers du serveur et doivent attendre. Ce mécanisme permet de préserver la cohérence du système de fichier du serveur et d'éviter les problèmes de concurrence entre les threads.
  
 ```java
 private void writeFile() throws IOException {
@@ -229,7 +230,7 @@ private void writeFile() throws IOException {
 }
 ```
 
-Récupération des données sur un fichier durant la commande List. Ce point est important parce que des utilitaires commme FileZilla s'attendent à un format bien particulier dans la réponse de la commande List, il a donc fallu implémenter une synthaxe bien particulière.
+Récupération des informations sur un fichier durant la commande `LIST`. Ce point est important parce que des utilitaires commme FileZilla s'attendent à un format bien particulier dans la réponse de la commande List, il a donc fallu implémenter une syntaxe bien particulière. Ici, on renvoie les informations des fichiers dans un format semblable à ce que peut produire la commande `ls`. A noter que cette méthode fonctionne si le système qui fait tourner le serveur est un système POSIX.
 
 ```java
 private String constructFileString(Path path) throws IOException {
@@ -268,9 +269,13 @@ private String constructFileString(Path path) throws IOException {
 }
 ```
 
-## UML
+## Diagrammes UML
 
-![diagramme UML de la partie commandes du serveur](doc/uml.png)
+### Architecture de la partie commandes du serveur
+![diagramme UML de la partie commandes du serveur](doc/uml_command.png)
+
+### Architecture de la partie exceptions du serveur
+![diagramme UML de la partie exceptions du serveur](doc/uml_exceptions.png)
 
 ## Vidéo de fonctionnement
 

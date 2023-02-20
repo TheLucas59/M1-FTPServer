@@ -48,6 +48,9 @@ public class ClientThread extends Thread {
 		this.expectedPassword = expectedPassword;
 	}
 	
+	/**
+	 * Runs the thread. Waits for an authentication before waiting for any command to execute on the server.
+	 */
 	@Override
 	public void run() {
 		try {
