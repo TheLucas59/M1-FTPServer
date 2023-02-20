@@ -37,7 +37,7 @@ public class Rnto extends Command {
 			synchronized(this.synchronizer) {
 				if(Files.exists(this.client.getPathToRename())) {
 					try {
-						Files.move(this.client.getPathToRename(), Paths.get(this.client.getRootPath().toString().concat(this.pathToRename)), StandardCopyOption.REPLACE_EXISTING);
+						Files.move(this.client.getPathToRename(), Paths.get(this.client.getRootPath().toString().concat("/").concat(this.pathToRename)), StandardCopyOption.REPLACE_EXISTING);
 					}
 					catch(IOException e) {
 						throw new RntoFailedException();

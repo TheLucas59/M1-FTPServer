@@ -19,9 +19,14 @@ Voici les commandes élémentaires à lancer depuis la racine du projet afin de 
 ### Compiler le projet 
 
 ```
-mvn test clean compile assembly:single
+mvn clean compile assembly:single
 ```
 
+### Lancer les test
+
+```
+mvn test
+```
 
 ### Générer la Javadoc
 
